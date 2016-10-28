@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.alura.listavip.model.Convidado;
 
@@ -19,6 +21,11 @@ public class ConvidadoDAO {
 
 	public List<Convidado> findAll() {
 		return manager.createQuery("select c from Convidado c", Convidado.class).getResultList();
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void save(Convidado convidado) {
+		manager.merge(convidado);		
 	}
 
 }
