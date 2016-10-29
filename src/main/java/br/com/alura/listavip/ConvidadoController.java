@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import br.com.alura.listavip.dao.ConvidadoDAO;
 import br.com.alura.listavip.model.Convidado;
+import br.com.alura.listavip.service.ConvidadoService;
 
 @Controller
 public class ConvidadoController {
 
 	@Autowired
-	private ConvidadoDAO ConvidadoDAO;
-
+	private ConvidadoService convidadoService;
+	
 	@RequestMapping("/")
 	public String index() {
 		return "index";
@@ -25,7 +25,7 @@ public class ConvidadoController {
 
 	@RequestMapping("listaconvidados")
 	public String listarConvidados(Model model) {
-		List<Convidado> convidados = ConvidadoDAO.findAll();
+		List<Convidado> convidados = convidadoService.findAll();
 		model.addAttribute("convidados", convidados);
 		return "listaconvidados";
 	}
@@ -35,8 +35,8 @@ public class ConvidadoController {
 			@RequestParam("nome") String telefone, Model model) {
 		
 		Convidado convidado = new Convidado(nome, email, telefone);
-		ConvidadoDAO.save(convidado);
-		List<Convidado> convidados = ConvidadoDAO.findAll();
+		convidadoService.save(convidado);		
+		List<Convidado> convidados = convidadoService.findAll();
 		model.addAttribute("convidados", convidados);
 		return "listaconvidados";
 	}
